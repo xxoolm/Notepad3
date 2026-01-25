@@ -1,8 +1,26 @@
 # Notepad3
 
-[![Build status](https://img.shields.io/appveyor/ci/rizonesoft/notepad3/master.svg)](https://ci.appveyor.com/project/rizonesoft/notepad3/branch/master)
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate/?hosted_button_id=7UGGCSDUZJPFE)
+Notepad3 is free and open source. Your support helps keep development active.
+
+[![Sponsor](https://img.shields.io/github/sponsors/rizonesoft?style=flat-square&logo=github)](https://github.com/sponsors/rizonesoft)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?style=flat-square&logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=7UGGCSDUZJPFE)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
+
+### Build Status
+Continuous integration ensures code quality across compilers and platforms.
+
+[![AppVeyor](https://img.shields.io/appveyor/ci/rizonesoft/notepad3/master.svg?style=flat-square&label=AppVeyor)](https://ci.appveyor.com/project/rizonesoft/notepad3/branch/master)
+[![CI](https://img.shields.io/github/actions/workflow/status/rizonesoft/Notepad3/build.yml?style=flat-square&label=CI)](https://github.com/rizonesoft/Notepad3/actions/workflows/build.yml)
+[![Latest Release](https://img.shields.io/github/v/release/rizonesoft/Notepad3?style=flat-square&label=Release&color=0e7490)](https://rizonesoft.com/downloads/notepad3/)
+[![Nightly](https://img.shields.io/github/v/release/rizonesoft/Notepad3?include_prereleases&style=flat-square&label=Nightly&color=6e40c9)](https://github.com/rizonesoft/Notepad3/releases)
+
+### Tech Stack
+Built with modern C++ on the powerful Scintilla editing component.
+
+[![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows)](https://rizonesoft.com/downloads/notepad3/)
+[![C++](https://img.shields.io/badge/Language-C%2B%2B-00599C?style=flat-square&logo=cplusplus)](https://github.com/rizonesoft/Notepad3)
+[![Scintilla](https://img.shields.io/badge/Editor-Scintilla-4B8BBE?style=flat-square)](https://www.scintilla.org/)
+[![Architecture](https://img.shields.io/badge/Arch-x86%20%7C%20x64%20%7C%20x64--AVX2%20%7C%20ARM64-informational?style=flat-square)](https://rizonesoft.com/downloads/notepad3/)
 
 Notepad3 is a fast and light-weight Scintilla-based text editor with syntax highlighting. It has a small memory footprint, but is powerful enough to handle most programming jobs. [Download Notepad3 here](https://rizonesoft.com/downloads/notepad3).
 

@@ -1757,6 +1757,9 @@ static void SetFindReplaceData()
     if (g_flagMatchText) { // cmd line
         if (g_flagMatchText & 4) {
             s_FindReplaceData.fuFlags = (SCFIND_REGEXP | SCFIND_POSIX);
+        } else {
+            // /m without R flag: force text mode (clear regex flags) - fixes #5060
+            s_FindReplaceData.fuFlags &= ~(SCFIND_REGEXP | SCFIND_POSIX);
         }
         if (g_flagMatchText & 8) {
             s_FindReplaceData.fuFlags |= SCFIND_MATCHCASE;
@@ -1943,6 +1946,9 @@ HWND InitInstance(const HINSTANCE hInstance, int nCmdShow)
         FileWatching.FileWatchingMode = Settings.FileWatchingMode;
         break;
     }
+
+    // Restore saved Monitoring Log setting - fixes #5037
+    FileWatching.MonitoringLog = Settings.MonitoringLog;
 
     // initial set text in front of ShowWindow()
     EditSetNewText(Globals.hwndEdit, "", 0, false, false);
@@ -2249,6 +2255,8 @@ LRESULT CALLBACK MainWndProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
             RefreshTitleBarThemeColor(hwnd);
             SendMessage(Globals.hwndEdit, WM_THEMECHANGED, 0, 0);
         }
+        // Forward to Scintilla to refresh mouse scroll settings (issue #5223)
+        SendMessage(Globals.hwndEdit, WM_SETTINGCHANGE, wParam, lParam);
     }
     break;
 #endif
@@ -2374,7 +2382,6 @@ LRESULT CALLBACK MainWndProc(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
     case WM_UAHDRAWMENUITEM:
     case WM_UAHDESTROYWINDOW:
     case WM_UAHMEASUREMENUITEM:
-    case WM_UAHNCPAINTMENUPOPUP: 
         return MsgUahMenuBar(hwnd, umsg, wParam, lParam);
 
     case WM_NCACTIVATE:
@@ -7865,8 +7872,6 @@ LRESULT MsgUahMenuBar(HWND hwnd, UINT umsg, WPARAM wParam, LPARAM lParam)
 
     } break;
 
-    // don't care
-    case WM_UAHNCPAINTMENUPOPUP:
     default:
         break;
     }
@@ -12041,7 +12046,7 @@ bool FileSave(FileSaveFlags fSaveFlags)
 
     bool const bSaveNeeded = (IsSaveNeeded() || IsFileChangedFlagSet()) && !bIsEmptyNewFile;
 
-    if (!(fSaveFlags & FSF_SaveAs) && !(fSaveFlags & FSF_SaveAlways) && !bSaveNeeded) {
+    if (!(fSaveFlags & FSF_SaveAs) && !(fSaveFlags & FSF_SaveAlways) && !bSaveNeeded && !Settings.FixTrailingBlanks) {
         _MRU_UpdateSession();
         AutoSaveStop();
         ResetFileObservationData(true);

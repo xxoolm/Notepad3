@@ -1092,7 +1092,8 @@ extern "C" bool CreateIniFile(const HPATHL hini_pth, DWORD* pdwFileSize_out)
         HPATHL hdir_path = Path_Copy(hini_pth);
         Path_RemoveFileSpec(hdir_path);
         if (Path_IsNotEmpty(hdir_path)) {
-            CreateDirectoryW(Path_Get(hdir_path), NULL);
+            // Use SHCreateDirectoryExW to create all intermediate directories - fixes #5075
+            SHCreateDirectoryExW(NULL, Path_Get(hdir_path), NULL);
         }
         Path_Release(hdir_path);
 
@@ -1725,6 +1726,7 @@ void LoadSettings()
     GET_BOOL_VALUE_FROM_INISECTION(SaveBeforeRunningTools, false);
     GET_BOOL_VALUE_FROM_INISECTION(EvalTinyExprOnSelection, true);
     GET_BOOL_VALUE_FROM_INISECTION(ResetFileWatching, true);
+    GET_BOOL_VALUE_FROM_INISECTION(MonitoringLog, false);  // View -> Monitoring Log - fixes #5037
     GET_INT_VALUE_FROM_INISECTION(EscFunction, 0, 0, 2);
     GET_BOOL_VALUE_FROM_INISECTION(AlwaysOnTop, false);
     if (Globals.CmdLnFlag_AlwaysOnTop) { Settings.AlwaysOnTop = (Globals.CmdLnFlag_AlwaysOnTop == 2); }
@@ -2147,6 +2149,8 @@ static bool _SaveSettings(bool bForceSaveSettings)
     if (bForceSaveSettings) { Settings.FileWatchingMode = FileWatching.FileWatchingMode; }
     SAVE_VALUE_IF_NOT_EQ_DEFAULT(Int, FileWatchingMode);
     SAVE_VALUE_IF_NOT_EQ_DEFAULT(Bool, ResetFileWatching);
+    if (bForceSaveSettings) { Settings.MonitoringLog = FileWatching.MonitoringLog; }  // fixes #5037
+    SAVE_VALUE_IF_NOT_EQ_DEFAULT(Bool, MonitoringLog);
     SAVE_VALUE_IF_NOT_EQ_DEFAULT(Int, AutoSaveInterval);
     SAVE_VALUE_IF_NOT_EQ_DEFAULT(Int, AutoSaveOptions);
 
